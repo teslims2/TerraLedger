@@ -14,6 +14,10 @@
 
 ---
 
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dde6a46d-dbdb-4b1b-a896-9b9bcffd3c83" />
+
+
 ## Table of Contents
 
 - [The Problem](#-the-problem)
