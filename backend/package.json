@@ -1,0 +1,20 @@
+{
+  "name": "terraledger-backend",
+  "version": "1.0.0",
+  "description": "Backend for TerraLedger",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "node src/main.ts",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@prisma/client": "^5.0.0",
+    "redis": "^4.0.0",
+    "stellar-sdk": "^12.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0"
+  }
+}

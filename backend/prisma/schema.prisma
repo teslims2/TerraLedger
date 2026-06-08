@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  stellarKey String   @unique
+  role       String
+}
+
+model Project {
+  id String @id @default(uuid())
+}
+
+model CreditBatch {
+  id          String @id @default(uuid())
+  onChainId   String
+  serialStart BigInt
+  serialEnd   BigInt
+}
+
+model Listing {
+  id String @id @default(uuid())
+}
+
+model Purchase {
+  id String @id @default(uuid())
+}
+
+model Retirement {
+  id       String @id @default(uuid())
+  certId   String @unique
+  certUrl  String
+  ipfsHash String
+}
+
+model Document {
+  id String @id @default(uuid())
+}
