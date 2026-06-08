@@ -1,0 +1,131 @@
+# New Contributor Guide — TerraLedger
+
+Welcome to TerraLedger! This guide gives you a complete overview of the project, how it's organized, and how to make your first contribution.
+
+---
+
+## What is TerraLedger?
+
+TerraLedger is a verified carbon credit marketplace built on Stellar/Soroban. Carbon projects mint tokenized Real World Assets (RWAs), corporations buy and permanently retire them on-chain, and every credit carries a full provenance trail from issuance to retirement.
+
+**The problem it solves:** The voluntary carbon market is riddled with fraud, double-counting, and greenwashing. VerdeChain makes all of that mathematically impossible — credits have unique serial numbers, retirements are irreversible on-chain, and the full audit trail is publicly readable without a wallet.
+
+---
+
+## Repository Layout
+
+```
+verdechain/
+├── contracts/        ← Rust/Soroban smart contracts (START HERE for blockchain work)
+├── backend/          ← NestJS REST API + PostgreSQL
+├── frontend/         ← Next.js 14 web app
+├── oracle/           ← Python oracle bridge (satellite + price feeds)
+├── scripts/          ← Setup, deploy, and test scripts
+├── docs/             ← You are here
+└── .github/          ← CI/CD workflows
+```
+
+---
+
+## How the Layers Connect
+
+```
+Frontend (Next.js)
+    │
+    ├── Freighter Wallet → signs transactions
+    ├── @stellar/stellar-sdk → submits txs to Stellar
+    │
+    └── Backend API (NestJS) → reads/writes PostgreSQL
+            │
+            └── Stellar RPC → reads on-chain state
+                    │
+                    └── Soroban Contracts (Rust)
+                            │
+                            └── Oracle (Python) → pushes off-chain data on-chain
+```
+
+---
+
+## Smart Contracts Overview
+
+| Contract | What it does |
+|---|---|
+| `verde_registry` | Project registration, verification, status management |
+| `verde_credit` | Mint, transfer, retire credits with serial numbers |
+| `verde_marketplace` | List, buy, bulk purchase credits for USDC |
+| `verde_oracle` | Receive satellite monitoring and price feed data |
+
+---
+
+## Good First Issues
+
+Look for issues tagged:
+- `good first issue` — small, well-scoped, no deep context needed
+- `documentation` — improve or add docs (no code required)
+- `tests` — add missing Rust unit tests or backend tests
+- `frontend` — UI components and pages
+
+---
+
+## Contribution Workflow
+
+```bash
+# 1. Fork and clone
+git clone https://github.com/YOUR_USERNAME/verdechain.git
+cd verdechain
+
+# 2. Create a feature branch
+git checkout -b feat/your-feature-name
+
+# 3. Make your changes
+# 4. Run tests
+./scripts/test-all.sh
+
+# 5. Commit with conventional commits
+git commit -m "feat: add serial number validation"
+
+# 6. Push and open a PR
+git push origin feat/your-feature-name
+```
+
+---
+
+## Commit Message Convention
+
+We use [Conventional Commits](https://www.conventionalcommits.org/):
+
+| Prefix | Use for |
+|---|---|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `test:` | Adding or fixing tests |
+| `docs:` | Documentation only |
+| `refactor:` | Code change that's not a fix or feature |
+| `chore:` | Build process, CI, tooling |
+
+---
+
+## Code Guidelines
+
+- Use `VerdeError` enum for all contract errors — never panic in production paths
+- Follow checks-effects-interactions pattern in Soroban contracts
+- Retirement must always be irreversible — never add an undo path
+- Avoid crypto jargon on buyer-facing frontend pages
+- All NestJS endpoints must have DTO validation via `class-validator`
+- All new features need tests
+
+---
+
+## Getting Help
+
+- Open a Discussion on GitHub for questions
+- Tag `@milah-247` in your PR for review
+- Check [Troubleshooting](./TROUBLESHOOTING.md) before opening an issue
+
+---
+
+## Next Steps
+
+1. 🚀 Follow the [Quick Start Guide](./QUICK_START.md) to get your environment running
+2. ✅ Run through the [Setup Checklist](./SETUP_CHECKLIST.md) to verify everything works
+3. Pick a `good first issue` and leave a comment to claim it
