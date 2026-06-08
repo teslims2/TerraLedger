@@ -8,7 +8,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![USDC](https://img.shields.io/badge/Stablecoin-USDC-2775CA?style=for-the-badge)](https://circle.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](./LICENSE)
-[![Status](https://img.shields.io/badge/Status-In_Development-yellow?style=for-the-badge)](https://github.com)
+[![Status](https://img.shields.io/badge/Status-In_Development-yellow?style=for-the-badge)](https://github.com/teslims2/TerraLedger)
 [![Tests](https://img.shields.io/badge/Tests-30_passing-brightgreen?style=for-the-badge)](./contracts)
 [![Testnet](https://img.shields.io/badge/Deployed-Stellar_Testnet-blueviolet?style=for-the-badge)](https://stellar.expert/explorer/testnet)
 
@@ -75,7 +75,7 @@ The result: companies pay real money for credits that may not represent real imp
 
 ## The Solution
 
-**CarbonLedger** puts the entire carbon credit lifecycle on Stellar:
+**TerraLedger** puts the entire carbon credit lifecycle on Stellar:
 
 - Every credit is minted with a **unique serial number** — double counting is mathematically impossible
 - Every retirement is **permanently irreversible on-chain** — greenwashing is eliminated
@@ -88,7 +88,7 @@ The result: companies pay real money for credits that may not represent real imp
 ## ⚙️ How It Works
 
 ```
-PROJECT DEVELOPER          CARBONLEDGER               CORPORATION
+PROJECT DEVELOPER          TERRALEDGER               CORPORATION
        │                        │                           │
        │── Register project ───►│                           │
        │◄── Pending status ─────│                           │
@@ -138,7 +138,7 @@ PROJECT DEVELOPER          CARBONLEDGER               CORPORATION
 
 ## Smart Contracts
 
-CarbonLedger deploys 4 Soroban contracts written in Rust:
+TerraLedger deploys 4 Soroban contracts written in Rust:
 
 ### `carbon_registry`
 Manages carbon project registration, verification, and lifecycle.
@@ -242,8 +242,8 @@ pub enum CarbonError {
 
 ```bash
 # 1. Clone and configure
-git clone https://github.com/dev-fatima-24/carbonledger.git
-cd carbonledger
+git clone https://github.com/teslims2/TerraLedger.git
+cd TerraLedger
 cp .env.example .env
 
 # 2. Rust toolchain
@@ -390,7 +390,7 @@ Good first issues tagged: `good first issue`, `documentation`, `tests`, `fronten
 
 ## 🔒 Security
 
-Do not open public issues for vulnerabilities. Email **security@carbonledger.io** with details.
+Do not open public issues for vulnerabilities. Email **security@terraledger.io** with details.
 See **[SECURITY.md](./SECURITY.md)** for our full policy and threat model.
 
 ---
@@ -413,6 +413,6 @@ MIT — see [LICENSE](./LICENSE)
 
 **Built on Stellar. Built for the planet.**
 
-⭐ Star this repo if CarbonLedger matters to you
+⭐ Star this repo if TerraLedger matters to you
 
 [Website](#) · [Audit Explorer](#) · [Twitter](#) · [Discord](#)
