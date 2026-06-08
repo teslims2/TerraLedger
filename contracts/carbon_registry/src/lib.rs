@@ -156,14 +156,14 @@ mod test {
     #[test]
     fn register_success() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         
         let admin = Address::generate(&env);
         client.initialize(&admin);
 
         let dev = Address::generate(&env);
-        env.mock_all_auths();
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
     }
 
@@ -171,14 +171,14 @@ mod test {
     #[should_panic]
     fn duplicate_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         
         let admin = Address::generate(&env);
         client.initialize(&admin);
 
         let dev = Address::generate(&env);
-        env.mock_all_auths();
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
     }
@@ -186,14 +186,14 @@ mod test {
     #[test]
     fn verify_success() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         
         let admin = Address::generate(&env);
         client.initialize(&admin);
         
         let verifier = Address::generate(&env);
-        env.mock_all_auths();
         client.add_verifier(&verifier);
 
         let dev = Address::generate(&env);
@@ -204,12 +204,12 @@ mod test {
     #[test]
     fn reject() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
         let verifier = Address::generate(&env);
-        env.mock_all_auths();
         client.add_verifier(&verifier);
         let dev = Address::generate(&env);
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
@@ -219,12 +219,12 @@ mod test {
     #[test]
     fn suspend() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
         let dev = Address::generate(&env);
-        env.mock_all_auths();
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
         client.suspend_project(&admin, &String::from_str(&env, "P1"));
     }
@@ -233,12 +233,12 @@ mod test {
     #[should_panic]
     fn unauthorized_verifier_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
         let dev = Address::generate(&env);
-        env.mock_all_auths();
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
         let verifier2 = Address::generate(&env);
         client.verify_project(&verifier2, &String::from_str(&env, "P1"));
@@ -247,12 +247,12 @@ mod test {
     #[test]
     fn increment_counters() {
         let env = Env::default();
-        let contract_id = env.register(CarbonRegistry, ());
+        let contract_id = env.register_contract(None, CarbonRegistry);
         let client = CarbonRegistryClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
         let dev = Address::generate(&env);
-        env.mock_all_auths();
         client.register_project(&String::from_str(&env, "P1"), &dev, &String::from_str(&env, "VCS"), &String::from_str(&env, "US"), &String::from_str(&env, "0.0"), &String::from_str(&env, "0.0"));
         client.increment_issued(&admin, &String::from_str(&env, "P1"), &100);
         client.increment_retired(&admin, &String::from_str(&env, "P1"), &50);

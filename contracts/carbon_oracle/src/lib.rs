@@ -132,11 +132,11 @@ mod test {
     #[test]
     fn submit_monitoring() {
         let env = Env::default();
-        let contract_id = env.register(CarbonOracle, ());
+        let contract_id = env.register_contract(None, CarbonOracle);
         let client = CarbonOracleClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let oracle = Address::generate(&env);
         client.add_oracle(&admin, &oracle);
         let hash = BytesN::from_array(&env, &[0; 32]);
@@ -147,11 +147,11 @@ mod test {
     #[should_panic]
     fn unauthorized_oracle_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonOracle, ());
+        let contract_id = env.register_contract(None, CarbonOracle);
         let client = CarbonOracleClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let oracle = Address::generate(&env);
         client.add_oracle(&admin, &oracle);
         let other = Address::generate(&env);
@@ -162,11 +162,11 @@ mod test {
     #[test]
     fn update_price() {
         let env = Env::default();
-        let contract_id = env.register(CarbonOracle, ());
+        let contract_id = env.register_contract(None, CarbonOracle);
         let client = CarbonOracleClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let oracle = Address::generate(&env);
         client.add_oracle(&admin, &oracle);
         client.update_credit_price(&oracle, &String::from_str(&env, "VCS"), &2023, &15, &String::from_str(&env, "SRC"));
@@ -175,11 +175,11 @@ mod test {
     #[test]
     fn staleness_check() {
         let env = Env::default();
-        let contract_id = env.register(CarbonOracle, ());
+        let contract_id = env.register_contract(None, CarbonOracle);
         let client = CarbonOracleClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let oracle = Address::generate(&env);
         client.add_oracle(&admin, &oracle);
         let hash = BytesN::from_array(&env, &[0; 32]);
@@ -190,11 +190,11 @@ mod test {
     #[test]
     fn flag_project() {
         let env = Env::default();
-        let contract_id = env.register(CarbonOracle, ());
+        let contract_id = env.register_contract(None, CarbonOracle);
         let client = CarbonOracleClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let oracle = Address::generate(&env);
         client.add_oracle(&admin, &oracle);
         client.flag_project(&oracle, &String::from_str(&env, "P1"));
@@ -203,11 +203,11 @@ mod test {
     #[test]
     fn get_benchmark_price() {
         let env = Env::default();
-        let contract_id = env.register(CarbonOracle, ());
+        let contract_id = env.register_contract(None, CarbonOracle);
         let client = CarbonOracleClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let oracle = Address::generate(&env);
         client.add_oracle(&admin, &oracle);
         client.update_credit_price(&oracle, &String::from_str(&env, "VCS"), &2023, &15, &String::from_str(&env, "SRC"));

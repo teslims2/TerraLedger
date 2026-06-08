@@ -138,7 +138,7 @@ impl CarbonCredit {
         let cert_id = env.crypto().sha256(&soroban_sdk::Bytes::from_slice(&env, &[0; 32])); // Pseudo hash
         
         let cert = RetirementCertificate {
-            cert_id: cert_id.clone(),
+            cert_id: cert_id.clone().into(),
             batch_id: batch_id.clone(),
             project_id: batch.project_id,
             retired_by: owner,
@@ -153,7 +153,7 @@ impl CarbonCredit {
         };
         env.storage().persistent().set(&cert_id, &cert);
         env.events().publish((symbol_short!("retire"),), cert_id.clone());
-        Ok(cert_id)
+        Ok(cert_id.into())
     }
 
     pub fn credit_to_address(env: Env, admin: Address, to: Address, batch_id: String, amount: u64) -> Result<(), CarbonError> {
@@ -186,11 +186,11 @@ mod test {
     #[test]
     fn mint_success() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
     }
     
@@ -198,22 +198,22 @@ mod test {
     #[should_panic]
     fn invalid_vintage_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &1999, &String::from_str(&env, "VCS"), &1000, &10);
     }
 
     #[test]
     fn transfer() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let from = Address::generate(&env);
         let to = Address::generate(&env);
         client.credit_to_address(&admin, &from, &String::from_str(&env, "B1"), &100);
@@ -225,11 +225,11 @@ mod test {
     #[should_panic]
     fn transfer_insufficient_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let from = Address::generate(&env);
         let to = Address::generate(&env);
         client.transfer_credits(&from, &to, &String::from_str(&env, "B1"), &50);
@@ -238,11 +238,11 @@ mod test {
     #[test]
     fn retire_generates_cert() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let owner = Address::generate(&env);
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         client.credit_to_address(&admin, &owner, &String::from_str(&env, "B1"), &100);
@@ -253,11 +253,11 @@ mod test {
     #[should_panic]
     fn retire_more_than_owned_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let owner = Address::generate(&env);
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         client.credit_to_address(&admin, &owner, &String::from_str(&env, "B1"), &100);
@@ -268,11 +268,11 @@ mod test {
     #[should_panic]
     fn zero_amount_fails() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let owner = Address::generate(&env);
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         client.credit_to_address(&admin, &owner, &String::from_str(&env, "B1"), &100);
@@ -282,11 +282,11 @@ mod test {
     #[test]
     fn balance_after_retire() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let owner = Address::generate(&env);
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         client.credit_to_address(&admin, &owner, &String::from_str(&env, "B1"), &100);
@@ -297,11 +297,11 @@ mod test {
     #[test]
     fn multiple_batches_unique_serials() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         client.mint_credits(&admin, &String::from_str(&env, "B2"), &String::from_str(&env, "P2"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         let b1 = client.get_credit_batch(&String::from_str(&env, "B1"));
@@ -312,11 +312,11 @@ mod test {
     #[test]
     fn get_certificate() {
         let env = Env::default();
-        let contract_id = env.register(CarbonCredit, ());
+        let contract_id = env.register_contract(None, CarbonCredit);
         let client = CarbonCreditClient::new(&env, &contract_id);
+        env.mock_all_auths();
         let admin = Address::generate(&env);
         client.initialize(&admin);
-        env.mock_all_auths();
         let owner = Address::generate(&env);
         client.mint_credits(&admin, &String::from_str(&env, "B1"), &String::from_str(&env, "P1"), &2023, &String::from_str(&env, "VCS"), &1000, &10);
         client.credit_to_address(&admin, &owner, &String::from_str(&env, "B1"), &100);
